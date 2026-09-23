@@ -1,0 +1,20 @@
+[Unit]
+Description=Pi-hole DNS Server
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+Image={{ pihole_image }}
+ContainerName=pihole
+PublishPort=53:53/tcp
+PublishPort=53:53/udp
+PublishPort=8080:80/tcp
+Volume=pihole_etc:/etc/pihole
+Environment=TZ={{ pihole_timezone }}
+Environment=FTLCONF_dns_listeningMode=ALL
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

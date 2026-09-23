@@ -1,0 +1,47 @@
+---
+- name: Configure Rocky Linux server
+  hosts: rocky_servers
+
+  handlers:
+    - name: Reload systemd
+      become: true
+      ansible.builtin.systemd_service:
+        daemon_reload: true
+
+  roles:
+    - role: nginx
+    - role: node_exporter
+    - role: health_checks
+    - role: firewall
+    - role: nginx_backup
+    - role: monitoring
+
+  post_tasks:
+    - name: Verify Nginx health endpoint
+      ansible.builtin.uri:
+        url: http://localhost/health
+        status_code: 200
+        return_content: true
+      register: nginx_health
+      failed_when: "'OK' not in nginx_health.content"
+
+    - name: Verify Prometheus is healthy
+      ansible.builtin.uri:
+        url: http://localhost:9090/-/healthy
+        status_code: 200
+
+    - name: Verify Grafana is healthy
+      ansible.builtin.uri:
+        url: http://localhost:3000/api/health
+        status_code: 200
+
+    - name: Verify Node Exporter is responding
+      ansible.builtin.uri:
+        url: http://localhost:9100/metrics
+        status_code: 200
+
+    - name: Verify Pi-hole DNS port is listening
+      ansible.builtin.wait_for:
+        host: 127.0.0.1
+        port: 53
+        timeout: 5

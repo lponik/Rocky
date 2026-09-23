@@ -1,0 +1,45 @@
+---
+- name: Make sure Nginx is present
+  become: true
+  ansible.builtin.dnf:
+    name: nginx
+    state: present
+
+- name: Ensure Nginx is running and enabled
+  become: true
+  ansible.builtin.systemd_service:
+    name: nginx
+    state: started
+    enabled: true
+
+- name: Configure Nginx health endpoint
+  become: true
+  ansible.builtin.copy:
+    dest: "{{ nginx_health_path }}"
+    content: "OK\n"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Configure Nginx rate limit zone
+  become: true
+  ansible.builtin.copy:
+    dest: /etc/nginx/conf.d/rate-limit-zone.conf
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      limit_req_zone $binary_remote_addr zone=perip:10m rate={{ nginx_rate_limit }};
+  notify: Reload Nginx
+
+- name: Configure Nginx rate limiting
+  become: true
+  ansible.builtin.copy:
+    dest: /etc/nginx/default.d/rate-limit.conf
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      limit_req zone=perip burst={{ nginx_rate_limit_burst }} nodelay;
+      limit_req_status 429;
+  notify: Reload Nginx

@@ -1,0 +1,7 @@
+[Unit]
+Description=Rocky Server Health Check
+After=network-online.target nginx.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/health-check.sh

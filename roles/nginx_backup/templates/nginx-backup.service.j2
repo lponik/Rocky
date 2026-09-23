@@ -1,0 +1,7 @@
+[Unit]
+Description=Backup Nginx configuration and website
+
+[Service]
+Type=oneshot
+User={{ nginx_backup_user }}
+ExecStart=/usr/local/bin/nginx-backup

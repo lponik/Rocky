@@ -1,0 +1,4 @@
+---
+nginx_health_path: /usr/share/nginx/html/health
+nginx_rate_limit: 5r/s
+nginx_rate_limit_burst: 10

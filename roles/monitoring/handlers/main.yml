@@ -1,0 +1,18 @@
+---
+- name: Restart Prometheus
+  become: true
+  ansible.builtin.systemd_service:
+    name: prometheus.service
+    state: restarted
+
+- name: Restart Grafana
+  become: true
+  ansible.builtin.systemd_service:
+    name: grafana.service
+    state: restarted
+
+- name: Restart Pi-hole
+  become: true
+  ansible.builtin.systemd_service:
+    name: pihole.service
+    state: restarted

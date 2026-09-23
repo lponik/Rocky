@@ -1,0 +1,64 @@
+# Ansible runtime files
+*.retry
+.ansible/
+
+# Local inventory and variable overrides
+inventory/*.local.yml
+inventory/*.local.yaml
+inventory/host_vars/*.local.yml
+inventory/host_vars/*.local.yaml
+inventory/group_vars/*.local.yml
+inventory/group_vars/*.local.yaml
+
+# Environment files and credentials
+.env
+.env.*
+!.env.example
+!.env.sample
+.netrc
+.npmrc
+.pypirc
+credentials*
+secrets*
+*.secret
+
+# Private keys and certificates
+*.key
+*.pem
+*.p12
+*.pfx
+id_rsa*
+id_dsa*
+id_ecdsa*
+id_ed25519*
+
+# WireGuard private configuration
+wg*.conf
+wireguard/*.conf
+wireguard/privatekey
+wireguard/presharedkey
+
+# Backups and archives
+backups/
+backup/
+*.bak
+*.backup
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+
+# Logs and temporary files
+*.log
+*.tmp
+*.swp
+*~
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store

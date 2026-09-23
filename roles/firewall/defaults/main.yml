@@ -1,0 +1,11 @@
+---
+firewall_services:
+  - cockpit
+  - dhcpv6-client
+  - dns
+  - http
+  - ssh
+
+firewall_ports:
+  - 51820/udp
+  - 3000/tcp

@@ -1,0 +1,3 @@
+---
+ansible_user: logan
+ansible_ssh_private_key_file: "{{ lookup('ansible.builtin.env', 'ROCKY_SERVER_SSH_KEY', default=undef()) }}"

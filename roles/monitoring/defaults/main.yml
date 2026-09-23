@@ -1,0 +1,6 @@
+---
+prometheus_image: docker.io/prom/prometheus:latest
+prometheus_scrape_interval: 15s
+grafana_image: docker.io/grafana/grafana:latest
+pihole_image: docker.io/pihole/pihole:latest
+pihole_timezone: America/New_York

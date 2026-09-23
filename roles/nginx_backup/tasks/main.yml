@@ -1,0 +1,39 @@
+---
+- name: Deploy Nginx backup script
+  become: true
+  ansible.builtin.template:
+    src: nginx-backup.j2
+    dest: /usr/local/bin/nginx-backup
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Configure Nginx backup service
+  become: true
+  ansible.builtin.template:
+    src: nginx-backup.service.j2
+    dest: /etc/systemd/system/nginx-backup.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload systemd
+
+- name: Configure Nginx backup timer
+  become: true
+  ansible.builtin.copy:
+    src: nginx-backup.timer
+    dest: /etc/systemd/system/nginx-backup.timer
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload systemd
+
+- name: Apply Nginx backup systemd changes
+  ansible.builtin.meta: flush_handlers
+
+- name: Ensure Nginx backup timer is enabled and running
+  become: true
+  ansible.builtin.systemd_service:
+    name: nginx-backup.timer
+    state: started
+    enabled: true

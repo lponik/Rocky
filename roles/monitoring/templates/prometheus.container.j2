@@ -1,0 +1,17 @@
+[Unit]
+Description=Prometheus Monitoring Server
+After=network-online.target node_exporter.service
+Wants=network-online.target
+
+[Container]
+Image={{ prometheus_image }}
+ContainerName=prometheus
+PublishPort=9090:9090
+Volume=/etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro,Z
+Volume=prometheus_data:/prometheus
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,88 @@
+---
+- name: Ensure Podman is installed
+  become: true
+  ansible.builtin.dnf:
+    name: podman
+    state: present
+
+- name: Create Prometheus configuration directory
+  become: true
+  ansible.builtin.file:
+    path: /etc/prometheus
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Configure Prometheus
+  become: true
+  ansible.builtin.template:
+    src: prometheus.yml.j2
+    dest: /etc/prometheus/prometheus.yml
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart Prometheus
+
+- name: Configure Prometheus Quadlet
+  become: true
+  ansible.builtin.template:
+    src: prometheus.container.j2
+    dest: /etc/containers/systemd/prometheus.container
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload systemd
+    - Restart Prometheus
+
+- name: Apply Prometheus systemd changes
+  ansible.builtin.meta: flush_handlers
+
+- name: Ensure Prometheus is running
+  become: true
+  ansible.builtin.systemd_service:
+    name: prometheus.service
+    state: started
+
+- name: Configure Grafana Quadlet
+  become: true
+  ansible.builtin.template:
+    src: grafana.container.j2
+    dest: /etc/containers/systemd/grafana.container
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload systemd
+    - Restart Grafana
+
+- name: Apply Grafana systemd changes
+  ansible.builtin.meta: flush_handlers
+
+- name: Ensure Grafana is running
+  become: true
+  ansible.builtin.systemd_service:
+    name: grafana.service
+    state: started
+
+- name: Configure Pi-hole Quadlet
+  become: true
+  ansible.builtin.template:
+    src: pihole.container.j2
+    dest: /etc/containers/systemd/pihole.container
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload systemd
+    - Restart Pi-hole
+
+- name: Apply Pi-hole systemd changes
+  ansible.builtin.meta: flush_handlers
+
+- name: Ensure Pi-hole is running
+  become: true
+  ansible.builtin.systemd_service:
+    name: pihole.service
+    state: started

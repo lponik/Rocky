@@ -1,0 +1,16 @@
+[Unit]
+Description=Grafana Monitoring Dashboard
+After=network-online.target prometheus.service
+Wants=network-online.target
+
+[Container]
+Image={{ grafana_image }}
+ContainerName=grafana
+PublishPort=3000:3000
+Volume=grafana_data:/var/lib/grafana
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
