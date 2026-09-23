@@ -1,19 +1,16 @@
 # Rocky Linux Homelab
 
+**The contents of this repository are specifically the Ansible code used to manage and reproduce the persistent server configuration. This README describes the larger server project for context.**
+
 This project documents my physical Rocky Linux homelab, which I use to practice Linux administration, networking, monitoring, security, containers, troubleshooting, and infrastructure automation.
 
 I originally built and configured the server manually so I could understand how each service worked. Once the environment was stable, I moved the persistent configuration into Ansible so the server could be maintained and rebuilt in a more repeatable way.
-
-The broader homelab includes more than what is stored in this repository. **The contents of this repository are specifically the Ansible code used to manage and reproduce the persistent server configuration.** This README describes the larger server project for context.
 
 ## Hardware
 
 The lab runs on a physical Dell OptiPlex 3050:
 
-- Intel Core i5-6500
-- 8 GB RAM
-- 1.5 TB HDD
-- Rocky Linux 9.8
+- Intel Core i5-6500, 8 GB RAM, 1.5 TB HDD, Rocky Linux 9.8
 
 ## Services
 
